@@ -22,10 +22,22 @@ public:
         }
         return dp[index][buy]=profit;
     }
-    int maxProfit(vector<int>& prices) 
+    int solveTab(vector<int>& prices,bool buy)
     {
         int n = prices.size();
-        vector<vector<int>>dp(n+1,vector<int>(2,-1));
-        return solve(prices,0,1,dp);
+        vector<vector<int>>dp(n+1,vector<int>(2,0));
+        for(int index = n-1 ; index>=0 ; index--)
+        {
+            dp[index][0]=max(dp[index+1][1]+prices[index],dp[index+1][0]);
+            dp[index][1]=max(dp[index+1][0]-prices[index],dp[index+1][1]);
+        }
+        return dp[0][1];
+    }
+    int maxProfit(vector<int>& prices) 
+    {
+        // int n = prices.size();
+        // vector<vector<int>>dp(n+1,vector<int>(2,-1));
+        // return solve(prices,0,1,dp);
+        return solveTab(prices,1);
     }
 };
