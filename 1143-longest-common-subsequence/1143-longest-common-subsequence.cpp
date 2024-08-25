@@ -4,13 +4,12 @@ public:
     {
         int n1=a.size();
         int n2=b.size();
-        vector<int>curr(n1+n2,0);
-        vector<int>next(n1+n2,0);
+        vector<int>curr(n2+1,0);
+        vector<int>next(n2+1,0);
         for(int i = n1-1 ; i >=0 ; i--)
         {
             for(int j = n2-1 ; j>= 0 ;j--)
             {
-                // int ans = 0;
                 if(a[i]==b[j])
                     curr[j] = 1 + next[j+1];
                 else
