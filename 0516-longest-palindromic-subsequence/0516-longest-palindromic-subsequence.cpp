@@ -1,23 +1,24 @@
 class Solution {
 public:
-    int solve(string &a, string &b,int i , int j,vector<vector<int>>&dp)
-    {
-        if(i==a.size()||j==b.size())
-            return 0;
-        if(dp[i][j]!=-1)
-            return dp[i][j];
-        if(a[i]==b[j])
-            dp[i][j] = 1 + solve(a,b,i+1,j+1,dp);
-        else
-            dp[i][j] = max(solve(a,b,i+1,j,dp),solve(a,b,i,j+1,dp));
-        return dp[i][j];
-    }
     int longestPalindromeSubseq(string s) {
         
         string a = s;
         std::reverse(s.begin(), s.end());
+        string b = s;
         int n = s.size();
-        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-        return solve(a,s,0,0,dp);
+        vector<int>curr(n+1,0);
+        vector<int>next(n+1,0);
+        for(int i = n-1 ; i >=0 ; i--)
+        {
+            for(int j = n-1 ; j>= 0 ;j--)
+            {
+                if(a[i]==b[j])
+                    curr[j] = 1 + next[j+1];
+                else
+                    curr[j] = max(next[j],curr[j+1]);
+            }
+            next=curr;
+        }
+        return next[0];
     }
 };
