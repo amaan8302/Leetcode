@@ -18,6 +18,6 @@ public:
             count += expandAroundCenter(s, i, i);
             count += expandAroundCenter(s, i, i + 1);
         }
-        return dp[n][n]=count;
+        return /*dp[n][n]=*/count;
     }
 };
