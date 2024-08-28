@@ -1,40 +1,24 @@
 class Solution {
 public:
-    // int solve(vector<int>& nums, int target,int index,vector<vector<int>>&dp)
-    // {
-    //     if(target == 0 && index == nums.size())
-    //         return 1;
-    //     if(index>=nums.size())
-    //         return 0;
-    //     if(dp[index][target]!=-1)
-    //         return dp[index][target];
-    //     int plus;
-    //     plus = solve(nums,target-nums[index],index+1,dp);
-    //     int minus = solve(nums,target+nums[index],index+1,dp);
-    //     return dp[index][target]=plus+minus;
-    // }
-    // int findTargetSumWays(vector<int>& nums, int target) 
-    // {
-    //     int n = nums.size();
-    //     int sum = 0;
-    //     for(int i : nums)
-    //         sum+=i;
-    //     vector<vector<int>>dp(n+1,vector<int>(target+sum+1,-1));
-    //     return solve(nums,target,0,dp);
-    // }
-    int solve(vector<int>& nums, int target,int index)
+    int solve(vector<int>& nums, int target, int index, int sum, vector<vector<int>>& dp) 
     {
-        if(target == 0 && index == nums.size())
-            return 1;
-        if(index>=nums.size())
-            return 0;
-        int plus;
-        plus = solve(nums,target-nums[index],index+1);
-        int minus = solve(nums,target+nums[index],index+1);
-        return plus+minus;
+        if (index == nums.size()) 
+        {
+            if (target == sum)
+                return 1;
+            else 
+                return 0;
+        }
+        if (dp[index][sum] != -1)
+            return dp[index][sum];
+        int plus = solve(nums, target, index + 1, sum + nums[index], dp);
+        int minus = solve(nums, target, index + 1, sum - nums[index], dp);
+        return dp[index][sum] = plus + minus;
     }
-    int findTargetSumWays(vector<int>& nums, int target) 
-    {
-        return solve(nums,target,0);
+    int findTargetSumWays(vector<int>& arr, int target) {
+        int n = arr.size();
+        int sum = accumulate(arr.begin(), arr.end(), 0);
+        vector<vector<int>> dp(n, vector<int>(2 * sum + 1, -1));
+        return solve(arr, target + sum, 0, sum, dp);
     }
 };
