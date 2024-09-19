@@ -22,7 +22,6 @@ public:
                 i++;
             if(sum>k)
                 j--;
-
         }
         return false;
     }
