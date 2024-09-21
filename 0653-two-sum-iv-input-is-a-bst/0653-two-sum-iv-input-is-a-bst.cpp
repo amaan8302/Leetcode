@@ -8,21 +8,29 @@ public:
         v.push_back(root->val);
         inorder(root->right,v);
     }
-    bool findTarget(TreeNode* root, int k) {
+    bool findTarget(TreeNode* root, int k) 
+    {
+        // if(root->left==NULL && root->right==NULL)
+        // {
+        //     if(root->val==k)
+        //         return 1;
+        //     else
+        //         return 0;
+        // }
         vector<int>v;
         inorder(root,v);
-        int i = 0;
-        int j = v.size()-1;
-        while(i<j)
-        {   
-            int sum = v[i]+v[j];
+        int low = 0;
+        int high = v.size()-1;
+        while(low<high)
+        {
+            int sum = v[low]+v[high];
             if(sum==k)
-                return true;
-            if(sum<k)
-                i++;
+                return 1;
             if(sum>k)
-                j--;
+                high--;
+            else
+                low++;
         }
-        return false;
+        return 0;
     }
 };
