@@ -1,31 +1,35 @@
 class Solution {
 public:
-    int minDistance(string word1, string word2) {
-        vector<vector<int>>dp(word1.length()+2,vector<int>(word2.length()+2,0));
-        for(int i = 0 ; i < word1.length();i++)
-            dp[i][word2.length()]=word1.length()-i;
-        for(int i = 0 ; i < word2.length();i++)
-            dp[word1.length()][i]=word2.length()-i;
-        for(int i = word1.length()-1; i>=0 ;i--)
+    int minDistance(string a, string b){
+        if(a.length()==0)
+            return b.length();
+        if(b.length()==0)
+            return a.length();
+        vector<int>curr(b.size()+1,0);
+        vector<int>next(b.size()+1,0);
+        for(int i = 0 ; i < b.length();i++)
+            next[i]=b.length()-i;
+        for(int i = a.length()-1; i>=0 ;i--)
         {
-            for(int j = word2.length()-1 ; j>=0 ; j--)
+            for(int j = b.length()-1 ; j>=0 ; j--)
             {
-                if(word1[i]==word2[j])
-                    dp[i][j] = dp[i+1][j+1];
+                curr[b.length()]=a.length()-i;  //second base case ki handling
+                if(a[i]==b[j])
+                    curr[j] = next[j+1];
                 else
                 {
                     int insertion,deletion,replace;
                     //insert
-                    insertion = 1 + dp[i][j+1];
+                    insertion = 1 + curr[j+1];
                     //deletion
-                    deletion = 1 + dp[i+1][j];
+                    deletion = 1 + next[j];
                     //replacement
-                    replace = 1 + dp[i+1][j+1];
-                    dp[i][j] = min(insertion,min(deletion, replace));
+                    replace = 1 + next[j+1];
+                    curr[j] = min(insertion,min(deletion, replace));
                 }
             }
+            next=curr;
         }
-        return dp[0][0];
-        // return solve(word1,word2,0,0,dp);
+        return next[0];
     }
 };
