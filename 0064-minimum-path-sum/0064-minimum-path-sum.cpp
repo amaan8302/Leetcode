@@ -10,7 +10,9 @@ public:
             return dp[row][col];
         int down = grid[row][col] + solve(grid,row+1,col,m,n,dp);
         int right = grid[row][col] + solve(grid,row,col+1,m,n,dp);
-        return dp[row][col]=min(down,right);
+        dp[row][col]=min(down,right);
+        return dp[row][col];
+        // return min(down,right);
     }
     int minPathSum(vector<vector<int>>& grid)
     {
