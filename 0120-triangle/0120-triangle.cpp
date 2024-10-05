@@ -12,10 +12,16 @@ public:
         int second = triangle[i][j]+solve(triangle,i+1,j+1,row,dp);
         return dp[i][j] = min(first,second);
     }
+    
     int minimumTotal(vector<vector<int>>& triangle) 
     {
         int row = triangle.size();
-        vector<vector<int>>dp(row+1,vector<int>(row+1,-1));
+        vector<vector<int>>dp(row,vector<int>(row,-1));
         return solve(triangle,0,0,row,dp);
+        // vector<vector<int>>dp(row+1,vector<int>(row+1,0));
+        // for(int i = 0 ; i < row ; i++)
+        // {
+        //     dp[row]
+        // }
     }
 };
