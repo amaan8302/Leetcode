@@ -3,7 +3,7 @@ public:
     vector<string> removeSubfolders(vector<string>& folder) {
         unordered_set<string>st(folder.begin(),folder.end());
         vector<string>res;
-        for(string currFolder:folder)
+        for(string& currFolder:folder)
         {
             bool isSub = 0;
             string temp = currFolder;
