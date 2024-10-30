@@ -1,26 +1,25 @@
 class Solution {
 public:
-    int solve(vector<vector<int>>& grid, int i, int j, int m, int n, int currVal,vector<vector<int>>&dp) {
-        if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] <= currVal)
-            return 0;
-        if(dp[i][j]!=-1)
-            return dp[i][j];
-        currVal = grid[i][j];
-        int first = 1 + solve(grid, i - 1, j + 1, m, n, currVal,dp);
-        int second = 1 + solve(grid, i, j + 1, m, n, currVal,dp);
-        int third = 1 + solve(grid, i + 1, j + 1, m, n, currVal,dp);
-
-        return dp[i][j]=max({first, second, third});
-    }
-
     int maxMoves(vector<vector<int>>& grid) {
         int m = grid.size();
         int n = grid[0].size();
-        vector<vector<int>>dp(m+1, vector<int>(n+1,-1));
-        int res = 0; 
-        for (int i = 0; i < m; i++) {
-            res = max(res, solve(grid, i, 0, m, n, -1,dp));
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+        
+        for (int j = n - 2; j >= 0; --j) {
+            for (int i = 0; i < m; ++i) {
+                int currVal = grid[i][j];
+                if (i > 0 && grid[i - 1][j + 1] > currVal) 
+                    dp[i][j] = max(dp[i][j], 1 + dp[i - 1][j + 1]);
+                if (grid[i][j + 1] > currVal)
+                    dp[i][j] = max(dp[i][j], 1 + dp[i][j + 1]);
+                if (i < m - 1 && grid[i + 1][j + 1] > currVal)
+                    dp[i][j] = max(dp[i][j], 1 + dp[i + 1][j + 1]);
+            }
         }
-        return res - 1;
+
+        int res = 0;
+        for (int i = 0; i < m; ++i)
+            res = max(res, dp[i][0]);
+        return res;
     }
 };
