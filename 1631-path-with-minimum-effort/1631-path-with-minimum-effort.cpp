@@ -16,6 +16,8 @@ public:
             pq.pop();
             int x = cord.first;
             int y = cord.second;
+            if(x== m-1 && y==n-1)
+                return diff;
             for(auto &d : dirs)
             {
                 int nx = x + d[0];
