@@ -9,11 +9,6 @@ public:
         while (low <= high) 
         {
             int mid = low + (high - low) / 2;
-            // if (items[mid][0] == tar) 
-            // {
-            //     result = mid;   
-            //     low = mid + 1;  
-            // } 
             if (items[mid][0] > tar)
                 high = mid - 1;
             else
@@ -22,9 +17,6 @@ public:
                 low = mid + 1;
             }
         }
-        // if(result == -1)
-        //     return 0;
-        // return items[result][1];
         return ans;
     }
     
@@ -32,7 +24,6 @@ public:
     {
         int m = queries.size();
         std::sort(items.begin(),items.end());
-        // std::sort(queries.begin(),queries.end());
         vector<int>ans;
         int seen = items[0][1];
         for(int i = 1 ; i < items.size() ; i++)
