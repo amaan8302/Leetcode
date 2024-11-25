@@ -1,53 +1,45 @@
 class Solution {
 public:
-    void solve(vector<vector<int>>& board, string &res)
-    {
-        for(int i = 0 ; i < 2 ; i++)
-        {
-            for(int j = 0 ; j < 3 ;j++)
-                res += to_string(board[i][j]);
-        }
-    }
-    int slidingPuzzle(vector<vector<int>>& board) 
-    {
-        unordered_map<int,list<int>>mp;
-        queue<string>que;
-        string res="";
+    int slidingPuzzle(vector<vector<int>>& board) {
         string target = "123450";
-        solve(board , res);
-        que.push(res);
-        mp[0]={1,3};
-        mp[1]={0,2,4};
-        mp[2]={1,5};
-        mp[3]={0,4};
-        mp[4]={1,3,5};
-        mp[5]={2,4};
-        unordered_set<string>visited;
-        visited.insert(res);
-        int lvl = 0;
-        while(!que.empty())
-        {
-            int n = que.size();
-            while(n--)
-            {
-                string top = que.front();
-                que.pop();
-                if(top==target)
-                    return lvl;
-                int idx = top.find('0');
-                for(auto &i : mp[idx])
-                {
-                    string newState = top;
-                    swap(newState[idx],newState[i]);
-                    if(visited.find(newState)==visited.end())
-                    {
-                        que.push(newState);
-                        visited.insert(newState);
+        string start;
+        
+        for(int i = 0; i < 2; i++)
+            for(int j = 0; j < 3; j++)
+                start += to_string(board[i][j]);
+        
+        vector<vector<int>> moves = {{1,3},{0,2,4},{1,5},{0,4},{1,3,5},{2,4}};
+        
+        queue<string> q;
+        unordered_set<string> visited;
+        q.push(start);
+        visited.insert(start);
+        
+        int steps = 0;
+        while (!q.empty()) {
+            int size = q.size();
+            
+            for (int i = 0; i < size; i++) {
+                string curr = q.front();
+                q.pop();
+                
+                if (curr == target) return steps;
+                
+                int zero = curr.find('0');
+                
+                for (int next : moves[zero]) {
+                    string temp = curr;
+                    swap(temp[zero], temp[next]);
+                    
+                    if (visited.count(temp) == 0) {
+                        q.push(temp);
+                        visited.insert(temp);
                     }
                 }
             }
-            lvl++;
+            steps++;
         }
+        
         return -1;
     }
 };
