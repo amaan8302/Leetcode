@@ -1,32 +1,30 @@
 class Solution {
 public:
-    int maxProfit(int k, vector<int>& prices)
+    int solve(vector<int>& prices,int index,bool buy,int limit,vector<vector<vector<int>>>&dp)
     {
         int n = prices.size();
-        vector<int>curr(2*k+1,0);
-        vector<int>next(2*k+1,0);
-        for(int index=n-1;index>=0;index--)
+        if(index==n||limit==0)
+            return 0;
+        if(dp[index][buy][limit]!=-1)
+            return dp[index][buy][limit];
+        int profit;
+        if(buy)
         {
-            for(int transactionNum = 2*k-1 ; transactionNum>=0 ; transactionNum--)
-            {
-                int profit;
-        
-                if(transactionNum%2==0)//buy karna allowed he
-                {
-                    int buy = -prices[index]+next[transactionNum+1];
-                    int ignore =next[transactionNum];
-                    profit = max(buy,ignore); 
-                }
-                else
-                {
-                    int sell = next[transactionNum+1]+prices[index];
-                    int ignore = next[transactionNum];
-                    profit=max(sell,ignore);
-                }
-                curr[transactionNum]=profit;
-            }
-            next=curr;
+            int buy = -prices[index]+solve(prices,index+1,0,limit,dp);
+            int ignore = solve(prices,index+1,1,limit,dp);
+            profit = max(buy,ignore); 
         }
-        return next[0];
+        else
+        {
+            int sell = solve(prices,index+1,1,limit-1,dp)+prices[index];
+            int ignore = solve(prices,index+1,0,limit,dp);
+            profit=max(sell,ignore);
+        }
+        return dp[index][buy][limit]=profit;
+    }
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(2,vector<int>(k+1,-1)));
+        return solve(prices,0,1,k,dp);
     }
 };
