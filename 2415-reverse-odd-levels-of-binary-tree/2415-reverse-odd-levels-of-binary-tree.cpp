@@ -1,42 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    TreeNode* reverseOddLevels(TreeNode* root) {
-        if(root == NULL) return root;
-        
-        queue<TreeNode*> q;
-        q.push(root);
-        int level = 0;
-        
-        while(!q.empty()) {
-            int n = q.size();
-            vector<TreeNode*> nodes;
-            
-            for(int i = 0; i < n; i++) {
-                TreeNode* curr = q.front();
-                q.pop();
-                
-                if(curr->left) {
-                    q.push(curr->left);
-                    nodes.push_back(curr->left);
-                }
-                if(curr->right) {
-                    q.push(curr->right);
-                    nodes.push_back(curr->right);
-                }
-            }
-            
-            if(level % 2 == 0 && !nodes.empty()) {
-                int i = 0, j = nodes.size() - 1;
-                while(i < j) {
-                    swap(nodes[i]->val, nodes[j]->val);
-                    i++;
-                    j--;
-                }
-            }
-            
-            level++;
+    void solve(TreeNode* l, TreeNode* r, int lvl)
+    {
+        if(l==NULL || r==NULL)
+            return;
+        if(lvl%2!=0)
+        {
+            int temp = l->val;
+            l->val=r->val;
+            r->val=temp;
         }
-        
+        solve(l->left,r->right,lvl+1);
+        solve(l->right,r->left,lvl+1);
+    }
+    TreeNode* reverseOddLevels(TreeNode* root) {
+        if(root==NULL)
+            return NULL;
+        solve(root->left,root->right,1);    
         return root;
     }
 };
